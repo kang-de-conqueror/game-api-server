@@ -1,15 +1,23 @@
+// routes.js
 const express = require("express");
-const routes = express.Router();
-const GameController = require("./controllers/GameController");
+const router = express.Router();
 const UserController = require("./controllers/UserController");
-const AuthController = require("./controllers/AuthController");
-const auth = require("../src/middlwares/auth");
-routes.post("/game", auth, GameController.store);
-routes.get("/games", GameController.index)
-routes.get("/game/:id", GameController.single);
-routes.put("/game/:id", auth, GameController.update);
-routes.delete("/game/:id", auth, GameController.delete);
+const GameController = require("./controllers/GameController");
+const authMiddleware = require("./middlewares/authMiddleware");
 
-routes.post("/user", auth, UserController.store);
-routes.post("/authenticate", AuthController.authentication);
-module.exports = routes;
+// Apply auth middleware to all routes except user registration and authentication
+
+// User routes
+router.post("/register", UserController.store);
+router.post("/login", UserController.authentication);
+
+router.use(authMiddleware);
+
+// Game routes
+router.post("/games", GameController.store);
+router.get("/games", GameController.index);
+router.get("/games/:id", GameController.single);
+router.put("/games/:id", GameController.update);
+router.delete("/games/:id", GameController.delete);
+
+module.exports = router;

@@ -1,7 +1,19 @@
+const { body, validationResult } = require("express-validator");
 const Game = require("../models/Game");
 const gameSchema = require('../validations/GameSchema');
+
 module.exports = {
     async store(req, res) {
+        // Validate input fields
+        await body("name").notEmpty().withMessage("Name is required").run(req);
+        await body("description").notEmpty().withMessage("Description is required").run(req);
+        // Add more validation rules as needed
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
         try {
             const game = await Game.create(req.body);
             res.status(201).json(game);
@@ -9,18 +21,29 @@ module.exports = {
             res.status(400).json(err);
         }
     },
-    async index(req, res) {
-        const games = await Game.findAll({ order: [["id", "DESC"]] });
 
-        res.status(200).json(games);
-    },
     async update(req, res) {
-        if (isNaN(req.params.id))
-            res.status(400).json({ error: "Invalid id" });
+        // Validate input fields
+        await body("name").notEmpty().withMessage("Name is required").run(req);
+        await body("description").notEmpty().withMessage("Description is required").run(req);
+        // Add more validation rules as needed
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        if (isNaN(req.params.id)) {
+            return res.status(400).json({ error: "Invalid id" });
+        }
 
         const id = parseInt(req.params.id);
 
         let game = await Game.findByPk(id);
+
+        if (!game) {
+            return res.status(404).json({ error: "Resource not found" });
+        }
 
         try {
             game = await game.update(req.body);
@@ -28,20 +51,27 @@ module.exports = {
         } catch (err) {
             res.status(400).json(err);
         }
-
     },
+
+    // Other methods remain unchanged
+    async index(req, res) {
+        const games = await Game.findAll({ order: [["id", "DESC"]] });
+        res.status(200).json(games);
+    },
+
     async single(req, res) {
         const game = await Game.findByPk(req.params.id);
 
-        if (game == undefined)
-            res.status(404).json({ error: "Resource not found" });
+        if (!game) {
+            return res.status(404).json({ error: "Resource not found" });
+        }
 
         res.status(200).json(game);
     },
+
     async delete(req, res) {
         const id = req.params.id;
         await Game.destroy({ where: { id } });
-
         res.status(200).json({ message: "Ok" });
     }
-}
+};

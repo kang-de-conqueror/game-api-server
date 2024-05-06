@@ -1,10 +1,24 @@
+// app.js
 const express = require("express");
-const app = express();
-const routes = require('./src/routes');
-const Game = require("./src/models/Game");
-const User = require("./src/models/User");
+const cors = require("cors");
+const routes = require("./routes");
 
-app.use(express.json());
+const app = express();
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: "Too many requests from this IP, please try again later",
+});
+
+app.use(limiter);
+
+// Apply CORS middleware
+app.use(cors());
+
+// Other middleware and configurations
+
+// Apply routes
 app.use("/", routes);
 
-app.listen(3001);
+module.exports = app;
