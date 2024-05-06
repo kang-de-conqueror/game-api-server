@@ -34,7 +34,7 @@ module.exports = {
         const game = await Game.findByPk(req.params.id);
 
         if (game == undefined)
-            res.status(404).json({ error: "resource not found" });
+            res.status(404).json({ error: "Resource not found" });
 
         res.status(200).json(game);
     },
@@ -42,6 +42,6 @@ module.exports = {
         const id = req.params.id;
         await Game.destroy({ where: { id } });
 
-        res.status(200).json({ message: "ok" });
+        res.status(200).json({ message: "Ok" });
     }
 }

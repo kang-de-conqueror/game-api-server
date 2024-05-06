@@ -9,15 +9,15 @@ module.exports = (req, res, next) => {
     const parts = authHeader.split(" ");
 
     if (parts.length !== 2)
-        res.status(401).json({ error: "token error" });
+        res.status(401).json({ error: "Token error" });
 
     const [bearer, token] = parts;
 
     if (!/^Bearer$/i.test(bearer))
-        res.status(401).json({ error: "incorrect format" });
+        res.status(401).json({ error: "Incorrect format" });
 
     jwt.verify(token, process.env.SECRET, (err, decoded) => {
-        if (err) return res.status(401).json({ error: "token invalid" });
+        if (err) return res.status(401).json({ error: "Token invalid" });
         next();
     });
 

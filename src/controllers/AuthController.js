@@ -15,14 +15,14 @@ module.exports = {
 
         const user = await UserController.getUser(email);
         if (user === null) {
-            res.status(404).json("user not found");
+            res.status(404).json("User not found");
         } else {
             const verify = bcrypt.compareSync(password, user.password);
             if (verify) {
                 user.password = undefined;
                 res.status(200).json({user, token: generateToken(user.id)});
             } else {
-                res.status(401).json("não autenticado");
+                res.status(401).json("Unauthorized");
             }
 
         }
