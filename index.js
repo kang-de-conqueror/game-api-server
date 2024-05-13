@@ -21,5 +21,6 @@ app.use(cors());
 
 // Apply routes
 app.use("/", routes);
+app.listen(5000);
 
 module.exports = app;
