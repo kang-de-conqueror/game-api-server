@@ -1,6 +1,5 @@
 const { body, validationResult } = require("express-validator");
 const Game = require("../models/Game");
-const gameSchema = require('../validations/GameSchema');
 
 module.exports = {
     async store(req, res) {

@@ -1,7 +1,8 @@
 // app.js
 const express = require("express");
 const cors = require("cors");
-const routes = require("./routes");
+const rateLimit = require("express-rate-limit");
+const routes = require("./src/routes");
 
 const app = express();
 

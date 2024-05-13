@@ -1,5 +1,4 @@
 const { body, validationResult } = require("express-validator");
-const User = require("../models/User");
 const UserController = require("./UserController");
 const bcrypt = require("bcryptjs");
 require("dotenv").config();

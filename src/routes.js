@@ -3,13 +3,14 @@ const express = require("express");
 const router = express.Router();
 const UserController = require("./controllers/UserController");
 const GameController = require("./controllers/GameController");
-const authMiddleware = require("./middlewares/authMiddleware");
+const AuthController = require("./controllers/AuthController");
+const authMiddleware = require("./middlwares/auth");
 
 // Apply auth middleware to all routes except user registration and authentication
 
 // User routes
 router.post("/register", UserController.store);
-router.post("/login", UserController.authentication);
+router.post("/login", AuthController.authentication);
 
 router.use(authMiddleware);
 
