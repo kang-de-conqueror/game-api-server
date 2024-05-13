@@ -1,24 +1,23 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 module.exports = (req, res, next) => {
-    const authHeader = req.headers.authorization;
+  const authHeader = req.headers.authorization;
 
-    if (!authHeader)
-        res.status(401).json({ error: "No token provided" });
+  if (!authHeader) {
+    return res.status(401).json({ error: "No token provided" });
+  }
 
-    const parts = authHeader.split(" ");
+  const parts = authHeader.split(" ");
 
-    if (parts.length !== 2)
-        res.status(401).json({ error: "Token error" });
+  if (parts.length !== 2) return res.status(401).json({ error: "Token error" });
 
-    const [bearer, token] = parts;
+  const [bearer, token] = parts;
 
-    if (!/^Bearer$/i.test(bearer))
-        res.status(401).json({ error: "Incorrect format" });
+  if (!/^Bearer$/i.test(bearer))
+    return res.status(401).json({ error: "Incorrect format" });
 
-    jwt.verify(token, process.env.SECRET, (err, decoded) => {
-        if (err) return res.status(401).json({ error: "Token invalid" });
-        next();
-    });
-
-}
+  jwt.verify(token, process.env.SECRET, (err, decoded) => {
+    if (err) return res.status(401).json({ error: "Token invalid" });
+    next();
+  });
+};

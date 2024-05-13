@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
 const routes = require("./src/routes");
+const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -18,9 +19,11 @@ app.use(limiter);
 app.use(cors());
 
 // Other middleware and configurations
+app.use(bodyParser.json({ type: "application/json" }));
 
 // Apply routes
 app.use("/", routes);
+
 app.listen(5000);
 
 module.exports = app;
