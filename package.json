@@ -1,8 +1,7 @@
 {
-  "name": "api_rest",
+  "name": "game-api-server",
   "version": "1.0.0",
   "main": "index.js",
-  "author": "Leandro Lima",
   "license": "MIT",
   "scripts": {
     "dev": "nodemon index.js"
