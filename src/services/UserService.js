@@ -3,11 +3,7 @@ const userRepository = require("../repositories/UserRepository");
 
 class UserService {
   async createUser(name, email, password) {
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(password, salt);
-
-    const userData = { name, email, password: hashedPassword };
-
+    const userData = { name, email, password };
     return await userRepository.createUser(userData);
   }
 

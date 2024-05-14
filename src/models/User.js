@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+const bcrypt = require("bcryptjs");
 const Connection = require("../database");
 
 const User = Connection.define("users", {
@@ -39,6 +40,15 @@ const User = Connection.define("users", {
       "CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
     ),
   },
+}, {
+  hooks: {
+    beforeCreate: async (user) => {
+      if (user.password) {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
+      }
+    }
+  }
 });
 
 module.exports = User;
