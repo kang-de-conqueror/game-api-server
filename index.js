@@ -24,6 +24,9 @@ app.use(bodyParser.json({ type: "application/json" }));
 // Apply routes
 app.use("/", routes);
 
-app.listen(5000);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
 module.exports = app;

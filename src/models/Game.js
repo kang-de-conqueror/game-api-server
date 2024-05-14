@@ -29,7 +29,6 @@ const Game = Connection.define("games", {
     type: DataTypes.TEXT,
     allowNull: false,
     validate: {
-      isInt: true,
       notNull: true,
       notEmpty: true,
     },
